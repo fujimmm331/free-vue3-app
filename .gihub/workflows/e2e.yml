@@ -1,0 +1,33 @@
+name: E2Eテスト
+
+on:
+  push:
+    branches-ignore:
+      - 'develop'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: リポジトリをチェックアウト
+      uses: actions/checkout@v3
+
+    - name: Node.jsをセットアップ
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: 依存関係をインストール
+      run: npm install
+
+    - name: Vue3アプリをビルド
+      run: npm run build
+
+    - name: サーバーを起動
+      run: npm run preview &
+      env:
+        CI: true
+
+    - name: PlaywrightのE2Eテストを実行
+      run: npx playwright test e2e/checkDisabledButton.spec.ts --workers=1 --timeout=60000
