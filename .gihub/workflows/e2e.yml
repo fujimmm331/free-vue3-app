@@ -1,9 +1,9 @@
 name: E2Eテスト
 
 on:
-  pull_request:
-    branches:
-      - main  # 監視するブランチを指定
+  push:
+    branches-ignore:
+      - 'develop'
 
 jobs:
   build-and-test:
